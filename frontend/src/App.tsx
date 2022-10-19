@@ -3,7 +3,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -21,8 +20,10 @@ import { FormControl } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { format, compareAsc } from "date-fns";
 import setSeconds from "date-fns/setSeconds";
+
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 function App() {
   const top100Films = () => [
@@ -35,7 +36,7 @@ function App() {
     { label: "Pulp Fiction", year: 1994 },
   ];
 
-  const [value, setValue] = React.useState<Date | null>(new Date(2014, 1, 11));
+  const [value, setValue] = React.useState<Date | null>(new Date());
 
   return (
     <div>
@@ -60,16 +61,7 @@ function App() {
       </Box>
 
       <Container maxWidth="md">
-        <Box
-        // sx={{
-        //   display: "flex",
-        //   "& > :not(style)": {
-        //     m: 1,
-        //     width: 700,
-        //     // height: 600,
-        //   },
-        // }}
-        >
+        <Box>
           <Paper>
             <Box
               display={"flex"}
@@ -83,7 +75,12 @@ function App() {
             </Box>
             <hr />
 
-            <Grid container spacing={5} sx={{ padding: 5 }}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={5}
+              sx={{ padding: 5 }}
+            >
               <Grid item xs={6}>
                 <p>ชื่อผู้ป่วย</p>
                 <Autocomplete
@@ -119,7 +116,7 @@ function App() {
                   options={top100Films()}
                   // sx={{ width: 300 }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Lock-Doctor" />
+                    <TextField {...params} label="Doctor" />
                   )}
                 />
               </Grid>
@@ -128,7 +125,7 @@ function App() {
                 <FormControl fullWidth variant="outlined">
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                      label="Basic example"
+                      label="Curreunt Time"
                       value={value}
                       onChange={(newValue) => {
                         setValue(newValue);
@@ -138,14 +135,21 @@ function App() {
                   </LocalizationProvider>
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <p>หมายเหตุ</p>
                 <TextField
                   fullWidth
-                  id="outlined-basic"
-                  // label="Outlined"
-                  variant="outlined"
+                  id="outlined-multiline-static"
+                  label="โภชนาการเพิ่มเติม"
+                  multiline
+                  rows={4}
+                  // defaultValue="Default Value"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" disabled>
+                  Disabled
+                </Button>
               </Grid>
             </Grid>
           </Paper>

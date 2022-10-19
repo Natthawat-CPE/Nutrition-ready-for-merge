@@ -21,6 +21,7 @@ import { FormControl } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { format, compareAsc } from "date-fns";
 import setSeconds from "date-fns/setSeconds";
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
     { label: "Pulp Fiction", year: 1994 },
   ];
 
-  const [value, setValue] = React.useState<Date | null>(null);
+  const [value, setValue] = React.useState<Date | null>(new Date(2014, 1, 11));
 
   return (
     <div>

@@ -125,7 +125,9 @@ function App() {
                 <FormControl fullWidth variant="outlined">
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                      label="Curreunt Time"
+                      // label="Curreunt Time"
+                      // mask="__/__/____ __:__"
+                      // views={["year", "month", "day"]}
                       value={value}
                       onChange={(newValue) => {
                         setValue(newValue);

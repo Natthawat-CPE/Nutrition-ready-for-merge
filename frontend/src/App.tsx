@@ -24,6 +24,7 @@ import setSeconds from "date-fns/setSeconds";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Divider from "@mui/joy/Divider";
 
 function App() {
   const top100Films = () => [
@@ -59,19 +60,30 @@ function App() {
           </Toolbar>
         </AppBar>
       </Box>
-
       <Container maxWidth="md">
         <Box>
           <Paper>
             <Box
               display={"flex"}
               sx={{
-                marginTop: 2,
+                marginTop: 3,
                 marginX: 2,
-                padding: 0,
+
+                paddingX: 2,
+                paddingY: 0,
               }}
             >
-              <h2>เพิ่มโภชนาการ</h2>
+              <Box sx={{ paddingX: 2, paddingY: 1 }}>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  color="primary"
+                  gutterBottom
+                  sx={{ paddingTop: 2 }}
+                >
+                  โภชนาการ
+                </Typography>
+              </Box>
             </Box>
             <hr />
 
@@ -79,7 +91,7 @@ function App() {
               container
               rowSpacing={1}
               columnSpacing={5}
-              sx={{ padding: 5 }}
+              sx={{ paddingX: 5 }}
             >
               <Grid item xs={6}>
                 <p>ชื่อผู้ป่วย</p>
@@ -94,6 +106,7 @@ function App() {
                   )}
                 />
               </Grid>
+
               <Grid item xs={6}>
                 <p>โภชนาการแบบ</p>
                 <Autocomplete
@@ -149,8 +162,15 @@ function App() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button variant="contained" disabled>
-                  Disabled
+                <Button variant="contained" sx={{ marginY: 3 }}>
+                  Black
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{ float: "right", marginY: 3 }}
+                  color="success"
+                >
+                  Submit
                 </Button>
               </Grid>
             </Grid>

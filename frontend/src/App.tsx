@@ -24,7 +24,7 @@ import setSeconds from "date-fns/setSeconds";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Divider from "@mui/joy/Divider";
+import Divider from "@mui/material/Divider";
 
 function App() {
   const top100Films = () => [
@@ -56,7 +56,7 @@ function App() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               ระบบเพิ่มโภชนาการผู้ป่วยใน
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit">Logout</Button>
           </Toolbar>
         </AppBar>
       </Box>
@@ -85,7 +85,7 @@ function App() {
                 </Typography>
               </Box>
             </Box>
-            <hr />
+            <Divider />
 
             <Grid
               container

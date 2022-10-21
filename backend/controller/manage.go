@@ -43,7 +43,7 @@ func CreateManage (c *gin.Context){
 		Nutrition: nutrition,
 		Map_Bed: map_bed,
 		Date: time.Now(),
-		Comment: "", //ไปหาวิธีใส่ Comment มาด้วย
+		Comment: manage.Comment, //เพิ่ม String จาก Text Field
 	}
 
 	//บันทึก
@@ -59,7 +59,7 @@ func CreateManage (c *gin.Context){
 func ListManage (c *gin.Context){
 	var manages []entity.Manage 
 	
-	if err := entity.DB().Raw("SELECT * FROM manages").Find(&manages).Error; err != nil {
+	if err := entity.DB().Preload("Doctor").Preload("Nutrition").Preload("Map_Bed").Raw("SELECT * FROM manages").Find(&manages).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
 		return
 	}

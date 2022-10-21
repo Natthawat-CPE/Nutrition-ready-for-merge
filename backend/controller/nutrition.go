@@ -9,13 +9,13 @@ import (
 
 // GET /nutritions
 func ListNutritions (c *gin.Context){
-	var nutrition []entity.Nutrition
-	if err := entity.DB().Raw("SELECT * FROM nutrition").Scan(&nutrition).Error; err!=nil{
+	var nutritions []entity.Nutrition
+	if err := entity.DB().Raw("SELECT * FROM nutritions").Scan(&nutritions).Error; err!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data":nutrition})
+	c.JSON(http.StatusOK, gin.H{"data":nutritions})
 }
 
 // GET /nutrition/:id

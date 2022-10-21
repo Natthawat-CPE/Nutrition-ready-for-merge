@@ -8,7 +8,7 @@ import (
 
 type Doctor struct { // ที่คิดไว้ตารางนี้จะโดนตัดแล้วแทนที่ด้วย DB ของ System: login
 	gorm.Model
-	Name	string
+	Name	string `gorm:"uniqueIndex"` 
 	// User_name string
 	// User_password string
 
@@ -18,7 +18,7 @@ type Doctor struct { // ที่คิดไว้ตารางนี้จ�
 
 type Nutrition struct{
 	gorm.Model
-	Type	string
+	Type	string 
 	Receive int
 	Detail	string
 

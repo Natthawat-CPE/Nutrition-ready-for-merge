@@ -8,15 +8,15 @@ import (
 	"github.com/Natthawat-CPE/Nutrition-System/entity"
 )
 
-// GET/doctor
+// GET/doctors
 //List all Doctor
-func ListDoctor (c * gin.Context){
-	var doctor []entity.Doctor
-	if err := entity.DB().Raw("SELECT * FROM doctor").Find(&doctor).Error; err != nil{
+func ListDoctors (c * gin.Context){
+	var doctors []entity.Doctor
+	if err := entity.DB().Raw("SELECT * FROM doctors").Find(&doctors).Error; err != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error:":err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data":doctor})
+	c.JSON(http.StatusOK, gin.H{"data":doctors})
 }
 
 // GET/doctor/:id

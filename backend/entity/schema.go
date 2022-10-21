@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type Doctor struct {
+type Doctor struct { // ที่คิดไว้ตารางนี้จะโดนตัดแล้วแทนที่ด้วย DB ของ System: login
 	gorm.Model
 	Name	string
-	User_name string
-	User_password string
+	// User_name string
+	// User_password string
 
 	Manages  []Manage `gorm:"foreignKey:DoctorID"`
 }
@@ -18,13 +18,13 @@ type Doctor struct {
 type Nutrition struct{
 	gorm.Model
 	Type	string
-	Receive *uint
+	Receive int
 	Detail	string
 
 	Manages []Manage `gorm:"foreignKey:NutritionID"`
 }
 
-type Map_Bed struct{ // จำลองตารางเพื่อน
+type Map_Bed struct{ // จำลองตาราง ARM
 	gorm.Model
 	Name	string
 
@@ -37,12 +37,12 @@ type Manage struct{
 	Date	time.Time
 	
 	DoctorID *uint
-	Doctor Doctor
+	Doctor Doctor `gorm:"references:id"`
 
 	NutritionID *uint
-	Nutrition	Nutrition
+	Nutrition	Nutrition `gorm:"references:id"`
 
 	Map_BedID *uint
-	Map_Bed	Map_Bed
+	Map_Bed	Map_Bed `gorm:"references:id"`
 
 }

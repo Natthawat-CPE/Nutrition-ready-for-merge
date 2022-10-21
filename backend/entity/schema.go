@@ -13,6 +13,7 @@ type Doctor struct { // ที่คิดไว้ตารางนี้จ�
 	// User_password string
 
 	Manages  []Manage `gorm:"foreignKey:DoctorID"`
+	
 }
 
 type Nutrition struct{
@@ -33,16 +34,18 @@ type Map_Bed struct{ // จำลองตาราง ARM
 
 type Manage struct{
 	gorm.Model
-	Comment string
-	Date	time.Time
 	
-	DoctorID *uint
-	Doctor Doctor `gorm:"references:id"`
-
-	NutritionID *uint
+	DoctorID 	*uint
+	Doctor Doctor	`gorm:"references:id"`
+	// Doctor Doctor `gorm:"references:id"`
+	
+	NutritionID 	*uint
 	Nutrition	Nutrition `gorm:"references:id"`
-
-	Map_BedID *uint
+	
+	Map_BedID 	*uint
 	Map_Bed	Map_Bed `gorm:"references:id"`
+	
+	Date	time.Time
+	Comment string
 
 }

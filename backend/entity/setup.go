@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -38,6 +40,12 @@ func SetupDatabase() {
 		Name: "Test-Doctor",
 	})
 
+	//สร้างตัวแปรที่อ้างถึง data ได้
+	var natthawat Doctor
+	var test Doctor
+	db.Raw("SELECT * FROM doctors WHERE name = ?", "Natthawat Salangsing").Scan(&natthawat)
+	db.Raw("SELECT * FROM doctors WHERE name = ?", "Test-Doctor").Scan(&test)
+
 	//Entity: Nutrition
 	Empty := Nutrition{
 		Type: "กำหนดเอง",
@@ -51,7 +59,7 @@ func SetupDatabase() {
 		Receive: 2000,
 		Detail: "ข้าวต้ม, นม, มะม่าง",
 	}
-	db.Model(&Nutrition{}).Create(Soft)
+	db.Model(&Nutrition{}).Create(&Soft)
 
 	Normal := Nutrition{
 		Type: "อาหารที่มีการเคี๊ยวหน่อย",
@@ -61,15 +69,44 @@ func SetupDatabase() {
 	db.Model(&Nutrition{}).Create(&Normal)
 
 	//Entity: Map_Bed : อยากได้แค่ชื่อของคนไข้
-	db.Model(&Map_Bed{}).Create(&Map_Bed{
+
+	n1 := Map_Bed{
 		Name: "นางสมหญิง ดีเด่น",
-	})
-	db.Model(&Map_Bed{}).Create(&Map_Bed{
+	}
+	db.Model(&Map_Bed{}).Create(&n1)
+	n2 := Map_Bed{
 		Name: "นายสมชาย ดีเด่น",
-	})
-	db.Model(&Map_Bed{}).Create(&Map_Bed{
+	}
+	db.Model(&Map_Bed{}).Create(&n2)
+	n3 := Map_Bed{
 		Name: "เด็กชายสมหวัง จรืงจริง",
+	}
+	db.Model(&Map_Bed{}).Create(&n3)
+
+	//Entity: Manage : ทดลองสร้างข้อมูล
+	db.Model(&Manage{}).Create(&Manage{
+		Doctor: natthawat,
+		Nutrition: Soft,
+		Map_Bed: n1,
+		Date: time.Now(),
+		Comment: "",
 	})
+	db.Model(&Manage{}).Create(&Manage{
+		Doctor: natthawat,
+		Nutrition: Empty,
+		Map_Bed: n2,
+		Date: time.Now(),
+		Comment: "",
+
+	})
+	db.Model(&Manage{}).Create(&Manage{
+		Doctor: natthawat,
+		Nutrition: Normal,
+		Map_Bed: n3,
+		Date: time.Now(),
+		Comment: "",
+	})
+
 
 
 

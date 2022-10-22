@@ -101,7 +101,7 @@ function App() {
     const id = event.target.id as keyof typeof App;
     const { value } = event.target.value;
     setManage({ ...manage, [id]: value });
-    setComment(value);
+    // setComment(value); // ไม่ต้องใส่ก็ได้เพราะ manual ใน
   };
 
   // onchange in combobox //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก

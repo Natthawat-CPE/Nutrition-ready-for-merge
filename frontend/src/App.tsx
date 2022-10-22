@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -26,6 +26,15 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
+import { DoctorInterface } from "../src/interfaces/IDoctor";
+import { ManageInterface } from "../src/interfaces/IMange";
+import { Map_BedInterface } from "../src/interfaces/IMap_Bed";
+import { NutritionInterface } from "../src/interfaces/INutrition";
+
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+import MenuItem from "@mui/material/MenuItem";
+
 function App() {
   const top100Films = () => [
     { label: "The Shawshank Redemption", year: 1994 },
@@ -36,8 +45,115 @@ function App() {
     { label: "Schindler's List", year: 1993 },
     { label: "Pulp Fiction", year: 1994 },
   ];
-
+  //[ตารางหลัก]
+  const [doctorID, setDoctorID] = useState("");
+  const [nutritionID, setNutritionID] = useState("");
+  const [map_bed, setMap_Bed] = useState("");
   const [value, setValue] = React.useState<Date | null>(new Date());
+  const [comment, setComment] = useState("");
+
+  // data ที่ได้มาจากการ fethch
+  const [doctor, setDoctor] = useState<DoctorInterface[]>([]);
+  const [nutrition, setNutrition] = useState<NutritionInterface[]>([]);
+  const [mb, setMB] = useState<Map_BedInterface[]>([]);
+  const [manage, setManage] = useState<ManageInterface[]>([]);
+
+  //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: any }>
+  ) => {
+    const id = event.target.id as keyof typeof App;
+    const { value } = event.target;
+    setManage({ ...manage, [id]: value });
+    setComment(value);
+  };
+
+  const onChangeDoctor = (event: SelectChangeEvent) => {
+    setDoctorID(event.target.value as string);
+  };
+
+  const onChangeNutrition = (event: SelectChangeEvent) => {
+    setNutritionID(event.target.value as string);
+  };
+
+  const onChangeMap_Bed = (event: SelectChangeEvent) => {
+    setMap_Bed(event.target.value as string);
+  };
+
+  //function Search
+  // function search() {
+  //   const apiUrl1 = `http://localhost:8080/GetTriage/${triageID}`;
+  //   const requestOptions1 = {
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   };
+  //   fetch(apiUrl1, requestOptions1)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       if (res.data) {
+  //         //console.log(res.data);
+  //         setIPD_Name(res.data.InpantientDepartment.InpantientDepartment_NAME);
+  //         setDisease_Name(res.data.Disease.Disease_NAME);
+  //         setDiseaseType(res.data.Disease.DiseaseType.DiseaseType_NAME);
+  //         setGenderType(res.data.Patient.Gender.Gender_Name);
+  //       }
+  //     });
+  // }
+
+  //function fethch data จาก backend
+  const getDoctor = async () => {
+    const apiUrl = "http://localhost:8888/doctors";
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          setDoctor(res.data);
+        }
+      });
+  };
+
+  const getNutrition = async () => {
+    const apiUrl = "http://localhost:8888/nutritions";
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          setNutrition(res.data);
+        }
+      });
+  };
+
+  const getMap_Bed = async () => {
+    const apiUrl = "http://localhost:8888/map_beds";
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          setMB(res.data);
+        }
+      });
+  };
+
+  //========function useEffect ========
+  useEffect(() => {
+    getDoctor();
+    getNutrition();
+    getMap_Bed();
+  }, []);
+
+  //Uer inter face
 
   return (
     <div>
@@ -122,16 +238,22 @@ function App() {
               </Grid>
               <Grid item xs={6}>
                 <p>แพทย์ผู้จัดการ</p>
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films()}
-                  // sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Doctor" />
-                  )}
-                />
+                <FormControl fullWidth>
+                  <Select
+                    id="Patient_Name"
+                    value={doctorID}
+                    displayEmpty
+                    inputProps={{ "aria-label": "Without label" }}
+                    onChange={onChangeDoctor}
+                  >
+                    <MenuItem value="">เลือก</MenuItem>
+                    {doctor.map((doctor) => (
+                      <MenuItem value={doctor.ID} key={doctor.ID}>
+                        {doctor.Name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <p>Date Time</p>

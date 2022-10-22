@@ -100,7 +100,7 @@ function App() {
   //     });
   // }
 
-  //function fethch data จาก backend
+  //function fetch data จาก backend
   const getDoctor = async () => {
     const apiUrl = "http://localhost:8888/doctors";
     const requestOptions = {
@@ -211,30 +211,42 @@ function App() {
             >
               <Grid item xs={6}>
                 <p>ชื่อผู้ป่วย</p>
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films()}
-                  // sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="เลือก" />
-                  )}
-                />
+                <FormControl fullWidth>
+                  <Select
+                    id="Patient_Name"
+                    value={map_bed}
+                    displayEmpty
+                    inputProps={{ "aria-label": "Without label" }}
+                    onChange={onChangeMap_Bed}
+                  >
+                    <MenuItem value="">เลือก</MenuItem>
+                    {mb.map((mb) => (
+                      <MenuItem value={mb.ID} key={mb.ID}>
+                        {mb.Name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={6}>
                 <p>โภชนาการแบบ</p>
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films()}
-                  // sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="เลือก" />
-                  )}
-                />
+                <FormControl fullWidth>
+                  <Select
+                    id="Patient_Name"
+                    value={nutritionID}
+                    displayEmpty
+                    inputProps={{ "aria-label": "Without label" }}
+                    onChange={onChangeNutrition}
+                  >
+                    <MenuItem value="">เลือก</MenuItem>
+                    {nutrition.map((nutrition) => (
+                      <MenuItem value={nutrition.ID} key={nutrition.ID}>
+                        {nutrition.Type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <p>แพทย์ผู้จัดการ</p>

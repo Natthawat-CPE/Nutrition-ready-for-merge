@@ -36,21 +36,12 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 function App() {
-  const top100Films = () => [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
-    { label: "The Dark Knight", year: 2008 },
-    { label: "12 Angry Men", year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: "Pulp Fiction", year: 1994 },
-  ];
   //[ตารางหลัก]
   const [doctorID, setDoctorID] = useState("");
   const [nutritionID, setNutritionID] = useState("");
   const [map_bed, setMap_Bed] = useState("");
-  const [value, setValue] = React.useState<Date | null>(new Date());
-  const [comment, setComment] = useState("");
+  const [date, setDate] = React.useState<Date | null>(new Date());
+  const [comment, setComment] = useState<String>("");
 
   // data ที่ได้มาจากการ fethch
   const [doctor, setDoctor] = useState<DoctorInterface[]>([]);
@@ -58,16 +49,62 @@ function App() {
   const [mb, setMB] = useState<Map_BedInterface[]>([]);
   const [manage, setManage] = useState<ManageInterface[]>([]);
 
-  //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก
+  //check save
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  // function submit
+  async function submit() {
+    // async function = Synchronous
+    // เตรียม data ที่จะส่งออก
+    let data = {
+      DoctorID: doctorID,
+      NutritionID: nutritionID,
+      Map_BedID: map_bed,
+      Date: date,
+      Comment: comment,
+    };
+    console.log(data); // log ดู data
+
+    const handleClose = (
+      event?: React.SyntheticEvent | Event,
+      reason?: string
+    ) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setSuccess(false);
+      setError(false);
+    };
+
+    const apiUrl = "http://localhost:8888/manage";
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          setSuccess(true);
+        } else {
+          setError(true);
+        }
+      });
+  }
+
+  // ใส่ Field ใน Text Field comment
   const handleInputChange = (
     event: React.ChangeEvent<{ id?: string; value: any }>
   ) => {
     const id = event.target.id as keyof typeof App;
-    const { value } = event.target;
+    const { value } = event.target.value;
     setManage({ ...manage, [id]: value });
     setComment(value);
   };
 
+  // onchange in combobox //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก
   const onChangeDoctor = (event: SelectChangeEvent) => {
     setDoctorID(event.target.value as string);
   };
@@ -275,9 +312,9 @@ function App() {
                       // label="Curreunt Time"
                       // mask="__/__/____ __:__"
                       // views={["year", "month", "day"]}
-                      value={value}
-                      onChange={(newValue) => {
-                        setValue(newValue);
+                      value={date}
+                      onChange={(date) => {
+                        setDate(date);
                       }}
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -292,6 +329,7 @@ function App() {
                   label="โภชนาการเพิ่มเติม"
                   multiline
                   rows={4}
+                  onChange={handleInputChange}
                   // defaultValue="Default Value"
                 />
               </Grid>
@@ -303,6 +341,7 @@ function App() {
                   variant="contained"
                   sx={{ float: "right", marginY: 3 }}
                   color="success"
+                  onClick={submit}
                 >
                   Submit
                 </Button>

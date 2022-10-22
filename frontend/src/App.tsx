@@ -41,7 +41,7 @@ function App() {
   const [nutritionID, setNutritionID] = useState("");
   const [map_bed, setMap_Bed] = useState("");
   const [date, setDate] = React.useState<Date | null>(new Date());
-  const [comment, setComment] = useState<String>("");
+  const [comment, setComment] = useState("");
 
   // data ที่ได้มาจากการ fethch
   const [doctor, setDoctor] = useState<DoctorInterface[]>([]);
@@ -329,7 +329,10 @@ function App() {
                   label="โภชนาการเพิ่มเติม"
                   multiline
                   rows={4}
-                  onChange={handleInputChange}
+                  // onChange={handleInputChange}
+                  onChange={(comment) => {
+                    setComment(comment.target.value);
+                  }}
                   // defaultValue="Default Value"
                 />
               </Grid>

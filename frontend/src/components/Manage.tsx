@@ -31,6 +31,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import MenuItem from "@mui/material/MenuItem";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+
 function Manage() {
   //[ตารางหลัก]
   const [doctorID, setDoctorID] = useState("");
@@ -43,7 +47,7 @@ function Manage() {
   const [doctor, setDoctor] = useState<DoctorInterface[]>([]);
   const [nutrition, setNutrition] = useState<NutritionInterface[]>([]);
   const [mb, setMB] = useState<Map_BedInterface[]>([]);
-  const [manage, setManage] = useState<ManageInterface[]>([]);
+  //   const [manage, setManage] = useState<ManageInterface[]>([]);
 
   //check save
   const [success, setSuccess] = useState(false);
@@ -62,17 +66,6 @@ function Manage() {
     };
     console.log(data); // log ดู data
 
-    const handleClose = (
-      event?: React.SyntheticEvent | Event,
-      reason?: string
-    ) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setSuccess(false);
-      setError(false);
-    };
-
     const apiUrl = "http://localhost:8888/manage";
     const requestOptions = {
       method: "POST",
@@ -90,15 +83,15 @@ function Manage() {
       });
   }
 
-  // ใส่ Field ใน Text Field comment
-  const handleInputChange = (
-    event: React.ChangeEvent<{ id?: string; value: any }>
-  ) => {
-    const id = event.target.id as keyof typeof Manage;
-    const { value } = event.target.value;
-    setManage({ ...manage, [id]: value });
-    // setComment(value); // ไม่ต้องใส่ก็ได้เพราะ manual ใน
-  };
+  //   // ใส่ Field ใน Text Field comment
+  //   const handleInputChange = (
+  //     event: React.ChangeEvent<{ id?: string; value: any }>
+  //   ) => {
+  //     const id = event.target.id as keyof typeof Manage;
+  //     const { value } = event.target.value;
+  //     setManage({ ...manage, [id]: value });
+  //     // setComment(value); // ไม่ต้องใส่ก็ได้เพราะ manual ใน
+  //   };
 
   // onchange in combobox //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก
   const onChangeDoctor = (event: SelectChangeEvent) => {
@@ -186,10 +179,45 @@ function Manage() {
     getMap_Bed();
   }, []);
 
+  //Alert Snackbar
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+    setError(false);
+  };
+
   //Uer inter face
 
   return (
     <div>
+      <Snackbar
+        open={success}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          บันทึกข้อมูลสำเร็จ
+        </Alert>
+      </Snackbar>
+      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          บันทึกข้อมูลไม่สำเร็จ
+        </Alert>
+      </Snackbar>
+
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>

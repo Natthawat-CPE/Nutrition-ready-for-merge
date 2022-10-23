@@ -18,7 +18,7 @@ type Doctor struct { // ที่คิดไว้ตารางนี้จ�
 
 type Nutrition struct{
 	gorm.Model
-	Type	string 
+	Type	string `gorm:"uniqueIndex"`
 	Receive int
 	Detail	string
 
@@ -27,7 +27,7 @@ type Nutrition struct{
 
 type Map_Bed struct{ // จำลองตาราง ARM
 	gorm.Model
-	Name	string
+	Name	string `gorm:"uniqueIndex"`
 
 	Manages []Manage `gorm:"foreignKey:Map_BedID"`
 }
